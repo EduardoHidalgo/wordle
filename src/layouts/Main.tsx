@@ -12,11 +12,17 @@ export const MainLayout = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const { isFirstGame, setFirstGame } = useFirstGame();
-  const { answers } = useWordle();
+  const { answers, onClickDel, onClickEnter, onClickKey, solved } = useWordle({
+    correctAnswer: "panal",
+  });
 
   useEffect(() => {
     if (isFirstGame) setInstructionsOpened(true);
   }, [isFirstGame]);
+
+  useEffect(() => {
+    console.log({ solved });
+  }, [solved]);
 
   const closeInstructions = () => {
     setInstructionsOpened(false);
@@ -51,7 +57,12 @@ export const MainLayout = () => {
             openStatistics={openStatistics}
           />
           <BoardLayout answers={answers} />
-          <KeyboardLayout />
+          <KeyboardLayout
+            answers={answers}
+            onClickDel={onClickDel}
+            onClickEnter={onClickEnter}
+            onClickKey={onClickKey}
+          />
         </div>
       </WordleStateContext.Provider>
     </div>

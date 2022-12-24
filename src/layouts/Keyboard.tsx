@@ -1,45 +1,66 @@
 import { Key } from "../components/Key";
+import { Answers } from "../types";
 
-export interface KeyboardProps {}
+export interface KeyboardProps {
+  answers: Answers;
+  onClickDel: () => void;
+  onClickEnter: () => void;
+  onClickKey: (value: string) => void;
+}
 
 // eslint-disable-next-line no-empty-pattern
-export const KeyboardLayout = ({}: KeyboardProps) => {
+export const KeyboardLayout = ({
+  answers,
+  onClickDel,
+  onClickEnter,
+  onClickKey,
+}: KeyboardProps) => {
+  const keyRow1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
+  const keyRow2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"];
+  const keyRow3 = ["Z", "x", "V", "B", "N", "M"];
+
+  const isWrongKey = (key: string) =>
+    answers
+      .flat(1)
+      .some((answer) => answer.word === key && answer.type === "Wrong");
+
   return (
     <div className="bg-[#F3F3F3] flex flex-col w-full min-w-[24rem] items-center justify-between rounded-md p-4 space-y-1">
       <div className="flex flex-row w-full space-x-1 justify-center">
-        <Key label="Q" />
-        <Key label="W" />
-        <Key label="E" />
-        <Key label="R" />
-        <Key label="T" />
-        <Key label="Y" />
-        <Key label="U" />
-        <Key label="I" />
-        <Key label="O" />
-        <Key label="P" />
+        {keyRow1.map((k, i) => (
+          <Key
+            answer={answers.flat(1).find((a) => a.word == k)}
+            isWrongKey={isWrongKey(k)}
+            key={`i-${i}`}
+            label={k}
+            onClick={() => onClickKey(k)}
+          />
+        ))}
       </div>
       <div className="flex flex-row w-full space-x-1 justify-center">
-        <Key label="A" />
-        <Key label="S" />
-        <Key label="D" />
-        <Key label="F" />
-        <Key label="G" />
-        <Key label="H" />
-        <Key label="J" />
-        <Key label="K" />
-        <Key label="L" />
-        <Key label="Ñ" />
+        {keyRow2.map((k, i) => (
+          <Key
+            answer={answers.flat(1).find((a) => a.word == k)}
+            isWrongKey={isWrongKey(k)}
+            key={`i-${i}`}
+            label={k}
+            onClick={() => onClickKey(k)}
+          />
+        ))}
       </div>
       <div className="flex flex-row w-full space-x-1 justify-center">
-        <Key label="ENTER" flex />
-        <Key label="Z" />
-        <Key label="X" />
-        <Key label="C" />
-        <Key label="V" />
-        <Key label="B" />
-        <Key label="N" />
-        <Key label="M" />
-        <Key label="DEL" flex />
+        <Key label="ENTER" flex onClick={() => onClickEnter()} isControl />
+        {keyRow3.map((k, i) => (
+          <Key
+            answer={answers.flat(1).find((a) => a.word == k)}
+            isWrongKey={isWrongKey(k)}
+            key={`i-${i}`}
+            label={k}
+            onClick={() => onClickKey(k)}
+          />
+        ))}
+
+        <Key label="DEL" flex onClick={() => onClickDel()} isControl />
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export const InstructionsLayout = ({
         <span className="mb-4 text-sm font-bold">Ejemplos</span>
         <div className="mb-4">
           <div className="flex flex-row justify-center space-x-2 mb-4">
-            <WordCard word="G" type="correct" />
+            <WordCard word="G" type="Correct" />
             <WordCard word="A" />
             <WordCard word="T" />
             <WordCard word="O" />
@@ -49,7 +49,7 @@ export const InstructionsLayout = ({
           <div className="flex flex-row justify-center space-x-2 mb-4">
             <WordCard word="V" />
             <WordCard word="O" />
-            <WordCard word="C" type="nearly" />
+            <WordCard word="C" type="Nearly" />
             <WordCard word="A" />
             <WordCard word="L" />
           </div>
@@ -62,11 +62,11 @@ export const InstructionsLayout = ({
         </div>
         <div className="mb-4">
           <div className="flex flex-row justify-center space-x-2 mb-4">
-            <WordCard word="C" type="correct" />
+            <WordCard word="C" type="Correct" />
             <WordCard word="A" />
             <WordCard word="N" />
             <WordCard word="T" />
-            <WordCard word="O" type="wrong" />
+            <WordCard word="O" type="Wrong" />
           </div>
           <div className="text-sm w-full text-center">
             <span>
