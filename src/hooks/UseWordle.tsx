@@ -13,6 +13,7 @@ interface UseWordleReturn {
   onClickEnter: () => void;
   onClickKey: (value: string) => void;
   solved: boolean | null;
+  startNewGame: () => void;
 }
 
 export const useWordle = ({
@@ -23,7 +24,6 @@ export const useWordle = ({
   const [rowIndex, setRowIndex] = useState<number>(0);
   // Each current row element
   const [index, setIndex] = useState<number>(0);
-
   const [solved, setSolved] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -59,8 +59,7 @@ export const useWordle = ({
     }
   };
 
-  const showResults = (solved: boolean) =>
-    setTimeout(() => setSolved(solved), 250);
+  const showResults = (solved: boolean) => setSolved(solved);
 
   const onClickDel = () => {
     if (solved !== null) return;
@@ -95,5 +94,22 @@ export const useWordle = ({
     setIndex(index + 1);
   };
 
-  return { answers, onClickDel, onClickEnter, onClickKey, solved };
+  const startNewGame = () => {
+    const newRow = Array(5).fill({ word: "", type: AnswerType.Stateless });
+    const newAnswers = JSON.parse(JSON.stringify(Array(5).fill(newRow)));
+
+    setAnswers(newAnswers);
+    setSolved(null);
+    setRowIndex(0);
+    setIndex(0);
+  };
+
+  return {
+    answers,
+    onClickDel,
+    onClickEnter,
+    onClickKey,
+    solved,
+    startNewGame,
+  };
 };

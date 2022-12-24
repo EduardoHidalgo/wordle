@@ -31,7 +31,7 @@ export const useFirstGame = (): UseFirstGameReturn => {
       if (typeof window !== "undefined")
         window.localStorage.setItem(key, "false");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

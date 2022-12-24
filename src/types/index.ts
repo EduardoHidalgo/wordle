@@ -11,3 +11,8 @@ export type Answer = {
   word: string;
   type: keyof typeof AnswerType;
 };
+
+export interface Statistics {
+  wins: number;
+  played: number;
+}

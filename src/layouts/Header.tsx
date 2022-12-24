@@ -21,13 +21,13 @@ export const HeaderLayout = ({
   return (
     <div className="bg-[#F3F3F3] flex relative flex-row w-full min-w-[24rem] items-center justify-between rounded-md p-4">
       <QuestionMarkCircleIcon
-        className="text-gray-500 w-6 h-6 cursor-pointer"
+        className="z-10 text-gray-500 w-6 h-6 cursor-pointer"
         onClick={openInstructions}
       />
-      <div className="text-center absolute right-0 left-0 font-semibold text-3xl tracking-widest">
+      <div className="z-0 text-center absolute right-0 left-0 font-semibold text-3xl tracking-widest">
         WORDLE
       </div>
-      <div className="space-x-2 flex flex-row items-center">
+      <div className="z-10 space-x-2 flex flex-row items-center">
         <ChartBarSquareIcon
           className="text-gray-500 w-6 h-6 cursor-pointer"
           onClick={openStatistics}

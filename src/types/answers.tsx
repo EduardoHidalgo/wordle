@@ -1,39 +1,7 @@
 import { AnswerType, Answers } from ".";
 
-export const initialAnswers: Answers = [
-  [
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-  ],
-  [
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-  ],
-  [
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-  ],
-  [
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-  ],
-  [
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-    { word: "", type: AnswerType.Stateless },
-  ],
-];
+const row = Array(5).fill({ word: "", type: AnswerType.Stateless });
+
+export const initialAnswers: Answers = JSON.parse(
+  JSON.stringify(Array(5).fill(row))
+);

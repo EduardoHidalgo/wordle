@@ -1,19 +1,33 @@
 import { useEffect, useState } from "react";
+
 import { WordleStateContext } from "../contexts/WordleStateContext";
+import { useFirstGame } from "../hooks/UseFirstGame";
+import { useWordle } from "../hooks/UseWordle";
+import { useStatistics } from "../hooks/UseStatistics";
+import { InstructionsLayout } from "./modals/Instructions";
 import { BoardLayout } from "./Board";
 import { HeaderLayout } from "./Header";
 import { KeyboardLayout } from "./Keyboard";
-import { InstructionsLayout } from "./modals/Instructions";
-import { useFirstGame } from "../hooks/UseFirstGame";
-import { useWordle } from "../hooks/UseWordle";
+import { StatisticsLayout } from "./modals/Statistics";
 
 export const MainLayout = () => {
+  const correctAnswer = "panal";
+
   const [instructionsOpened, setInstructionsOpened] = useState<boolean>(false);
+  const [statisticsOpened, setStatisticsOpened] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
+  const { statistics, setNewStatistic } = useStatistics();
   const { isFirstGame, setFirstGame } = useFirstGame();
-  const { answers, onClickDel, onClickEnter, onClickKey, solved } = useWordle({
-    correctAnswer: "panal",
+  const {
+    answers,
+    onClickDel,
+    onClickEnter,
+    onClickKey,
+    solved,
+    startNewGame,
+  } = useWordle({
+    correctAnswer,
   });
 
   useEffect(() => {
@@ -21,7 +35,10 @@ export const MainLayout = () => {
   }, [isFirstGame]);
 
   useEffect(() => {
-    console.log({ solved });
+    if (solved != null) {
+      setNewStatistic(solved);
+      setStatisticsOpened(true);
+    }
   }, [solved]);
 
   const closeInstructions = () => {
@@ -33,7 +50,14 @@ export const MainLayout = () => {
 
   const toogleDarkMode = () => setIsDarkMode(!isDarkMode);
 
-  const openStatistics = () => {};
+  const openStatistics = () => setStatisticsOpened(true);
+
+  const closeStatistics = () => setStatisticsOpened(false);
+
+  const newGame = () => {
+    startNewGame();
+    closeStatistics();
+  };
 
   return (
     <div className="w-screen h-screen flex bg-white items-center justify-center">
@@ -49,6 +73,16 @@ export const MainLayout = () => {
             setOpen={setInstructionsOpened}
           />
         )}
+        {
+          <StatisticsLayout
+            closeStatistics={closeStatistics}
+            correctAnswer={correctAnswer}
+            open={statisticsOpened}
+            solved={solved}
+            newGame={newGame}
+            statistics={statistics}
+          />
+        }
         <div className="flex flex-col items-center justify-between max-w-sm min-w-[24rem] h-screen px-4 py-8">
           <HeaderLayout
             isDarkMode={isDarkMode}
