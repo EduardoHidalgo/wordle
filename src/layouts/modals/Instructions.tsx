@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import { Modal } from "../../components/Modal";
 import { Button } from "../../components/Button";
 import { WordCard } from "../../components/WordCard";
 
-export interface InstructionsProps {}
+export interface InstructionsProps {
+  onClickCloseInstructions: () => void;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
 
-export const InstructionsLayout = ({}: InstructionsProps) => {
-  const [open, setOpen] = useState(true);
-
-  const onClickPlay = () => setOpen(false);
-
+export const InstructionsLayout = ({
+  onClickCloseInstructions,
+  open,
+  setOpen,
+}: InstructionsProps) => {
   return (
     <Modal open={open} setOpen={setOpen}>
       <div className="flex flex-col w-full font-roboto">
@@ -78,7 +82,7 @@ export const InstructionsLayout = ({}: InstructionsProps) => {
         <div className="my-8 text-sm w-full text-center">
           <span>¡Una palabra nueva cada 5 minutos!</span>
         </div>
-        <Button label="¡JUGAR!" onClick={onClickPlay} />
+        <Button label="¡JUGAR!" onClick={onClickCloseInstructions} />
       </div>
     </Modal>
   );

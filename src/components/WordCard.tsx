@@ -1,22 +1,23 @@
 import classNames from "classnames";
+import { AnswerType } from "../types";
 
 export interface WordCardProps {
-  type?: "correct" | "wrong" | "nearly" | "default";
-  word: string;
+  type?: keyof typeof AnswerType;
+  word?: string;
 }
 
 export const WordCard = ({ type, word }: WordCardProps) => {
   const cardColor = () => {
     switch (type) {
-      case "correct":
+      case AnswerType.Correct:
         return "bg-[#6AAA64]";
-      case "nearly":
+      case AnswerType.Nearly:
         return "bg-[#CEB02C]";
-      case "wrong":
+      case AnswerType.Wrong:
         return "bg-[#939B9F]";
-      case "default":
+      case AnswerType.Stateless:
       default:
-        return "bg-[#F3F3F3] ";
+        return "bg-gray-200";
     }
   };
 
