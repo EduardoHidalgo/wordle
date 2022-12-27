@@ -9,7 +9,7 @@ interface UseCountdownReturn {
 export const useCountdown = (): UseCountdownReturn => {
   const key = "countdown";
 
-  const MIN = 2;
+  const MIN = 5;
   const FIVE_MIN = 1000 * 60 * MIN;
   const msToNextRounded5Min = FIVE_MIN - (Date.now() % FIVE_MIN);
 
