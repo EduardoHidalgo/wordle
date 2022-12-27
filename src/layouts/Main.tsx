@@ -1,41 +1,44 @@
 import { useEffect, useState } from "react";
 
 import { WordleStateContext } from "../contexts/WordleStateContext";
+import { useCountdown } from "../hooks/UseCountdown";
 import { useFirstGame } from "../hooks/UseFirstGame";
-import { useWordle } from "../hooks/UseWordle";
+import { useShouldWait } from "../hooks/UseShouldWait";
 import { useStatistics } from "../hooks/UseStatistics";
+import { useWordle } from "../hooks/UseWordle";
 import { InstructionsLayout } from "./modals/Instructions";
+import { StatisticsLayout } from "./modals/Statistics";
 import { BoardLayout } from "./Board";
 import { HeaderLayout } from "./Header";
 import { KeyboardLayout } from "./Keyboard";
-import { StatisticsLayout } from "./modals/Statistics";
 
 export const MainLayout = () => {
-  const correctAnswer = "panal";
-
   const [instructionsOpened, setInstructionsOpened] = useState<boolean>(false);
   const [statisticsOpened, setStatisticsOpened] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
+  const { getParsedCountdown, timeout, resetCountdown } = useCountdown();
   const { statistics, setNewStatistic } = useStatistics();
   const { isFirstGame, setFirstGame } = useFirstGame();
+  const { setWait, shouldWait } = useShouldWait();
   const {
     answers,
+    correctAnswer,
     onClickDel,
     onClickEnter,
     onClickKey,
     solved,
     startNewGame,
-  } = useWordle({
-    correctAnswer,
-  });
+  } = useWordle({});
 
   useEffect(() => {
     if (isFirstGame) setInstructionsOpened(true);
   }, [isFirstGame]);
 
   useEffect(() => {
-    if (solved != null) {
+    if (solved !== null) {
+      if (timeout == false) setWait(true);
+
       setNewStatistic(solved);
       setStatisticsOpened(true);
     }
@@ -57,6 +60,8 @@ export const MainLayout = () => {
   const newGame = () => {
     startNewGame();
     closeStatistics();
+    resetCountdown();
+    setWait(false);
   };
 
   return (
@@ -77,10 +82,13 @@ export const MainLayout = () => {
           <StatisticsLayout
             closeStatistics={closeStatistics}
             correctAnswer={correctAnswer}
-            open={statisticsOpened}
-            solved={solved}
+            getParsedCountdown={getParsedCountdown}
             newGame={newGame}
+            open={statisticsOpened}
+            shouldWait={shouldWait}
+            solved={solved}
             statistics={statistics}
+            timeout={timeout}
           />
         }
         <div className="flex flex-col items-center justify-between max-w-sm min-w-[24rem] h-screen px-4 py-8">

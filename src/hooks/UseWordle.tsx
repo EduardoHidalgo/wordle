@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import { AnswerType, Answers } from "../types";
 import { initialAnswers } from "../types/answers";
 
-interface UseWordleProps {
-  correctAnswer: string;
-}
+interface UseWordleProps {}
 
 interface UseWordleReturn {
   answers: Answers;
+  correctAnswer: string;
   onClickDel: () => void;
   onClickEnter: () => void;
   onClickKey: (value: string) => void;
@@ -16,9 +15,8 @@ interface UseWordleReturn {
   startNewGame: () => void;
 }
 
-export const useWordle = ({
-  correctAnswer,
-}: UseWordleProps): UseWordleReturn => {
+export const useWordle = ({}: UseWordleProps): UseWordleReturn => {
+  const [correctAnswer, setCorrectAnswer] = useState<string>("");
   const [answers, setAnswers] = useState<Answers>(initialAnswers);
   // Horizontal
   const [rowIndex, setRowIndex] = useState<number>(0);
@@ -27,8 +25,27 @@ export const useWordle = ({
   const [solved, setSolved] = useState<boolean | null>(null);
 
   useEffect(() => {
+    setWord();
+  }, []);
+
+  useEffect(() => {
     if (rowIndex === 5) showResults(false);
   }, [rowIndex]);
+
+  const storeBlacklistedWord = () => {
+    try {
+      const key = "blacklisted";
+      const json = window.localStorage.getItem(key);
+      const blacklist = json ? (JSON.parse(json) as Array<string>) : [];
+
+      window.localStorage.setItem(
+        key,
+        JSON.stringify([...blacklist, correctAnswer])
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const validateRowAnswer = () => {
     let copyRow = answers[rowIndex];
@@ -59,7 +76,10 @@ export const useWordle = ({
     }
   };
 
-  const showResults = (solved: boolean) => setSolved(solved);
+  const showResults = (solved: boolean) => {
+    storeBlacklistedWord();
+    setSolved(solved);
+  };
 
   const onClickDel = () => {
     if (solved !== null) return;
@@ -94,9 +114,11 @@ export const useWordle = ({
     setIndex(index + 1);
   };
 
-  const startNewGame = () => {
+  const startNewGame = async () => {
     const newRow = Array(5).fill({ word: "", type: AnswerType.Stateless });
     const newAnswers = JSON.parse(JSON.stringify(Array(5).fill(newRow)));
+
+    await setWord();
 
     setAnswers(newAnswers);
     setSolved(null);
@@ -104,8 +126,22 @@ export const useWordle = ({
     setIndex(0);
   };
 
+  const setWord = async () => {
+    try {
+      const word = await fetch("/api/words", {
+        body: JSON.stringify([]),
+        method: "POST",
+      }).then((res) => res.json());
+
+      setCorrectAnswer(word);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     answers,
+    correctAnswer,
     onClickDel,
     onClickEnter,
     onClickKey,

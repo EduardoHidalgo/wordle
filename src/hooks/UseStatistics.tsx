@@ -14,7 +14,7 @@ export const useStatistics = (): UseStatisticsReturn => {
   const [statistics, setStatistics] = useState<Statistics>(initialData);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (window !== undefined) {
       try {
         const data = window.localStorage.getItem(key);
         const state: Statistics = data ? JSON.parse(data) : initialData;
@@ -24,20 +24,19 @@ export const useStatistics = (): UseStatisticsReturn => {
         console.error(error);
         setStatistics(initialData);
       }
-    }
+    } else return setStatistics(initialData);
   }, []);
 
   const setNewStatistic = (solved: boolean) => {
     try {
-      setStatistics((st) => {
-        return {
-          played: st.played + 1,
-          wins: solved ? st.wins + 1 : st.wins,
-        };
-      });
+      const newState = {
+        played: statistics.played + 1,
+        wins: solved ? statistics.wins + 1 : statistics.wins,
+      };
 
-      if (typeof window !== "undefined")
-        window.localStorage.setItem(key, JSON.stringify(statistics));
+      setStatistics(newState);
+
+      window.localStorage.setItem(key, JSON.stringify(newState));
     } catch (error) {
       console.error(error);
     }

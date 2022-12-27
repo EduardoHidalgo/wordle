@@ -17,7 +17,7 @@ export const KeyboardLayout = ({
 }: KeyboardProps) => {
   const keyRow1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const keyRow2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"];
-  const keyRow3 = ["Z", "x", "V", "B", "N", "M"];
+  const keyRow3 = ["Z", "X", "C", "V", "B", "N", "M"];
 
   const isWrongKey = (key: string) =>
     answers

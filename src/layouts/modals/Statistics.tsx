@@ -5,29 +5,38 @@ import { Statistics } from "../../types";
 export interface StatisticsLayoutProps {
   closeStatistics: () => void;
   correctAnswer: string;
-  open: boolean;
-  solved: boolean | null;
+  getParsedCountdown: () => string;
   newGame: () => void;
+  open: boolean;
+  shouldWait: boolean;
+  solved: boolean | null;
   statistics: Statistics;
+  timeout: boolean;
 }
 
 export const StatisticsLayout = ({
   closeStatistics,
   correctAnswer,
-  open,
-  solved,
+  getParsedCountdown,
   newGame,
+  open,
+  shouldWait,
+  solved,
   statistics,
+  timeout,
 }: StatisticsLayoutProps) => {
   const onClick = () => {
-    if (solved != null) return newGame();
-
-    closeStatistics();
+    if (solved != null || shouldWait) {
+      if (timeout) {
+        newGame();
+        closeStatistics();
+      }
+    } else closeStatistics();
   };
 
   return (
     <Modal
-      open={open}
+      open={open || shouldWait}
       setOpen={() => {
         if (solved == null) closeStatistics();
       }}
@@ -52,14 +61,20 @@ export const StatisticsLayout = ({
             </span>
           </span>
         )}
-        {solved != null && (
+        {(solved != null || shouldWait) && !timeout && (
           <span className="text-center text-base mb-4">
             SIGUIENTE PALABRA EN:{" "}
-            <span className="font-semibold">{`00:00`}</span>
+            <span className="font-semibold">{getParsedCountdown()}</span>
           </span>
         )}
         <Button
-          label={solved != null ? "JUGAR DE NUEVO" : "CERRAR"}
+          label={
+            solved != null || shouldWait
+              ? timeout
+                ? "JUGAR DE NUEVO"
+                : "ESPERANDO"
+              : "CERRAR"
+          }
           onClick={onClick}
         />
       </div>

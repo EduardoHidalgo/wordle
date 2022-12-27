@@ -11,7 +11,7 @@ export const useFirstGame = (): UseFirstGameReturn => {
   const [isFirstGame, setIsFirstGame] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (window !== undefined) {
       try {
         const state =
           window.localStorage.getItem(key) === "false" ? false : true;
@@ -21,7 +21,7 @@ export const useFirstGame = (): UseFirstGameReturn => {
         console.error(error);
         setIsFirstGame(true);
       }
-    }
+    } else setIsFirstGame(true);
   }, []);
 
   const setFirstGame = () => {

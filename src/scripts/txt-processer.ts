@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 
 try {
-  const txtPath = path.join(__dirname, "../data/") + "words.txt";
-  const jsonPath = path.join(__dirname, "../data/") + "words.json";
+  const txtPath = path.join(__dirname, "../../data/") + "words.txt";
+  const jsonPath = path.join(__dirname, "../../data/") + "words.json";
 
   var readStream = fs.createReadStream(txtPath, "utf8");
   let data: string = "";
@@ -23,10 +23,9 @@ try {
       );
 
       // Creating object.
-      const mappedWords: Array<{ id: number; word: string }> =
-        filteredWords.map((w, i) => {
-          return { id: i, word: w };
-        });
+      const mappedWords: Array<string> = filteredWords.map((w, i) => {
+        return w;
+      });
 
       // Creating json.
       const json = JSON.stringify(mappedWords);
